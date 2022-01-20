@@ -1,0 +1,5 @@
+1. open terminal
+2. cd ~/Desktop/Changeset-Script/Changesets2CSV
+3. source venv/bin/activate
+4. cd changesets2CSV
+5. python changesets2csv weekly Users-test.json
