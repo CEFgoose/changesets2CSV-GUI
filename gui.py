@@ -7,12 +7,13 @@ QGridLayout,QHBoxLayout,QVBoxLayout,
 QMenuBar,QMenu,QAction,QStatusBar,
 QGroupBox,QSplitter,QTabWidget,QFrame,
 QPushButton,QRadioButton,QLabel,
-QListView,QTableView,QHeaderView,
 QLCDNumber,QCalendarWidget)
 import os
 import sys
-from CS2CSV import *
+
+from PROCESS_FUNCTIONS import *
 from FILE_FUNCTIONS import *
+from LIST_FUNCTIONS import *
 
 class MainWindow(QMainWindow):
     def __init__(self, *args, **kwargs):
@@ -51,10 +52,11 @@ class MainWindow(QMainWindow):
         self.teamBoxLayout=QGridLayout()
         self.teamBox.setLayout(self.teamBoxLayout)
         self.teamList=QTreeWidget()
-        self.teamList.setColumnCount(2)
-        self.teamList.setHeaderLabels(['Name','OSM Username'])
+        self.teamList.setColumnCount(4)
+        self.teamList.setHeaderLabels(['Name','OSM Username','OSM User Id','Role'])
         self.teamList.setSizePolicy (QSizePolicy.Minimum, QSizePolicy.Minimum)
         self.teamList.setSelectionMode(QAbstractItemView.ExtendedSelection)
+        self.teamList.clicked.connect(lambda:team_list_clicked(self))
         self.teamBoxLayout.addWidget(self.teamList)
         self.teamFrameLayout.addWidget(self.teamBox)
 
@@ -76,11 +78,15 @@ class MainWindow(QMainWindow):
             menuBar = self.menuBar()
             importMenu = menuBar.addMenu("&Import")
             exportMenu = menuBar.addMenu("&Export")
+            processMenu = menuBar.addMenu("&Process")
 
             self.import_team_action = QAction("Import Team List",self)
-            self.import_team_action.triggered.connect(lambda:import_editor_json(self))
+            self.import_team_action.triggered.connect(lambda:import_team_json(self))
             importMenu.addAction(self.import_team_action) 
 
+            self.get_changesets = QAction("Get OSM Changesets",self)
+            self.get_changesets.triggered.connect(lambda:start_get_changesets(self))
+            processMenu.addAction(self.get_changesets) 
         # #---------------------------------------
         # self.importEditorsButton=QPushButton()
         # self.importEditorsButton.setText("Import Editor List")
