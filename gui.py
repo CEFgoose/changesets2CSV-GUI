@@ -10,7 +10,8 @@ QPushButton,QRadioButton,QLabel,
 QLCDNumber,QCalendarWidget)
 import os
 import sys
-
+from CHANGESET_MODAL import *
+from EDIT_USER_MODAL import *
 from PROCESS_FUNCTIONS import *
 from FILE_FUNCTIONS import *
 from LIST_FUNCTIONS import *
@@ -18,6 +19,8 @@ from LIST_FUNCTIONS import *
 class MainWindow(QMainWindow):
     def __init__(self, *args, **kwargs):
         super(MainWindow, self).__init__(*args, **kwargs)
+        self.query_mode=None
+        self.display_mode='basic'
         self.filters = ""
         self.select_filters = "JSON (*.json)"
         self.importDirectory=os.getcwd()
@@ -72,21 +75,45 @@ class MainWindow(QMainWindow):
         self.controlBox.setTitle("Controls")
         self.buttonFrameLayout.addWidget(self.controlBox)
 
+        self.controlBoxLayout=QVBoxLayout()
+        self.controlBox.setLayout(self.controlBoxLayout)
+
+        
+        # self.calendarBox = QGroupBox()
+        # self.controlBoxLayout.addWidget(self.calendarBox)
+        # self.calendarBoxLayout=QHBoxLayout()
+        # self.calendarBox.setLayout(self.calendarBoxLayout)
+
+        # self.calendar=QCalendarWidget()
+        # self.calendarBoxLayout.addWidget(self.calendar)
+
         self._createMenuBar()
 
     def _createMenuBar(self):
             menuBar = self.menuBar()
-            importMenu = menuBar.addMenu("&Import")
-            exportMenu = menuBar.addMenu("&Export")
+            fileMenu = menuBar.addMenu("&File")
+            editMenu = menuBar.addMenu("&Edit")
             processMenu = menuBar.addMenu("&Process")
-
+# file menu-------------------------------------------
             self.import_team_action = QAction("Import Team List",self)
             self.import_team_action.triggered.connect(lambda:import_team_json(self))
-            importMenu.addAction(self.import_team_action) 
-
+            fileMenu.addAction(self.import_team_action) 
+            self.save_team_action = QAction("Save Team List",self)
+            #self.save_team_action.triggered.connect(lambda:import_team_json(self))
+            fileMenu.addAction(self.save_team_action) 
+# process menu----------------------------------------
             self.get_changesets = QAction("Get OSM Changesets",self)
-            self.get_changesets.triggered.connect(lambda:start_get_changesets(self))
+            self.get_changesets.triggered.connect(lambda:changesets_mode_widget(self))
             processMenu.addAction(self.get_changesets) 
+# edit menu-------------------------------------------
+            self.edit_user_action = QAction("Edit User",self)
+            self.edit_user_action.triggered.connect(lambda:open_edit_user_widget(self,self.selected_user_ids))
+            editMenu.addAction(self.edit_user_action) 
+
+            self.delete_user_action = QAction("Delete User",self)
+            #self.delete_user_action.triggered.connect(lambda:import_team_json(self))
+            editMenu.addAction(self.delete_user_action) 
+
         # #---------------------------------------
         # self.importEditorsButton=QPushButton()
         # self.importEditorsButton.setText("Import Editor List")
