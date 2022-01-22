@@ -30,26 +30,72 @@ def edit_user_widget(main,user=None):
     textfield_box.setLayout(textfield_box_layout)
     edit_user_label=QLabel()
     textfield_box_layout.addWidget(edit_user_label)
-    edit_name_field=QLineEdit()
-    textfield_box_layout.addWidget(edit_name_field)
-    edit_username_field=QLineEdit()
-    textfield_box_layout.addWidget(edit_username_field)
-    edit_userid_field=QLineEdit()
-    textfield_box_layout.addWidget(edit_userid_field)
+
+    name_label=QLabel()
+    name_label.setText("Name")
+    textfield_box_layout.addWidget(name_label)
+
+    main.edit_name_field=QLineEdit()
+    textfield_box_layout.addWidget(main.edit_name_field)
+
+    username_label=QLabel()
+    username_label.setText("Username")
+    textfield_box_layout.addWidget(username_label)
+
+    main.edit_username_field=QLineEdit()
+    textfield_box_layout.addWidget(main.edit_username_field)
+
+    userid_label=QLabel()
+    userid_label.setText("User ID")
+    textfield_box_layout.addWidget(userid_label)
+
+
+    main.edit_userid_field=QLineEdit()
+    textfield_box_layout.addWidget(main.edit_userid_field)
+
+    role_label=QLabel()
+    role_label.setText("Role")
+    textfield_box_layout.addWidget(role_label)
+
     edit_role_field=QLineEdit()
     textfield_box_layout.addWidget(edit_role_field)
     if user is not None:
         edit_user_label.setText("Edit User: %s"%(user.name))
-        edit_name_field.setText(user.name)
-        edit_username_field.setText(user.osm_username)
-        edit_userid_field.setText(user.osm_user_id)
+        main.edit_name_field.setText(user.name)
+        main.edit_username_field.setText(user.osm_username)
+        main.edit_userid_field.setText(user.osm_user_id)
         edit_role_field.setText(user.role)
     else:
-        edit_user_label.setText("Add New User:")     
-    
+        edit_user_label.setText("Add New User:")    
+
+    button_box=QGroupBox()
+    button_box_layout=QHBoxLayout()
+    button_box.setLayout(button_box_layout)
+
+    textfield_box_layout.addWidget(button_box)
+
+    save_button=QPushButton()
+    save_button.setText("Save")
+    save_button.clicked.connect(lambda:save(main,user))
+    button_box_layout.addWidget(save_button)
+
+    cancel_button=QPushButton()
+    cancel_button.setText("Cancel")
+    cancel_button.clicked.connect(lambda:cancel(main,user))
+    button_box_layout.addWidget(cancel_button)
+
     main.edit_user_widget.show()
 
 
+
+def save(main,user):
+    user.name=main.edit_name_field.text()
+    user.username=main.edit_username_field.text()
+    user.user_id=main.edit_userid_field.text()
+    user.role=main.edit_role_field.text()
+def cancel(main):
+    main.edit_user_widget.close()
+    
     # daily_button=QRadioButton()
     # daily_button.setText('Daily')
     # daily_button.toggled.connect(lambda:set_mode(main,daily_button))
