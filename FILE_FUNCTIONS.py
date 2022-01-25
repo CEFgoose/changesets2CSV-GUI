@@ -3,14 +3,16 @@ import json
 from EDITOR import *
 from DELETE_USER_MODAL import *
 from datetime import datetime, date, timedelta
+
 def import_team_json(main):
     files = QFileDialog.getOpenFileNames(main, main.filters, main.importDirectory, main.select_filters)[0]
-    main.team_file=files[0]
-    with open(main.team_file, 'r') as team_file:
-        team_obj=team_file.read()
-        main.team_obj = json.loads(team_obj)
-    main.loaded_team_obj=team_obj
-    parse_editors(main,main.team_obj)
+    if len(files)>0:
+        main.team_file=files[0]
+        with open(main.team_file, 'r') as team_file:
+            team_obj=team_file.read()
+            main.team_obj = json.loads(team_obj)
+        main.loaded_team_obj=team_obj
+        parse_editors(main,main.team_obj)
 
 
 def parse_editors(main,team_obj):

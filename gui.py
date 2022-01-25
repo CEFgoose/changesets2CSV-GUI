@@ -15,7 +15,7 @@ from EDIT_USER_MODAL import *
 from PROCESS_FUNCTIONS import *
 from FILE_FUNCTIONS import *
 from LIST_FUNCTIONS import *
-
+from ADD_USER_MODAL import *
 class MainWindow(QMainWindow):
     def __init__(self, *args, **kwargs):
         super(MainWindow, self).__init__(*args, **kwargs)
@@ -109,7 +109,7 @@ class MainWindow(QMainWindow):
 # edit menu-------------------------------------------
 
             self.add_user_action = QAction("Add User",self)
-            self.add_user_action.triggered.connect(lambda:open_edit_user_widget(self,self.selected_user_ids))
+            self.add_user_action.triggered.connect(lambda:add_user_widget(self,self.selected_user_ids))
             editMenu.addAction(self.add_user_action) 
 
             self.edit_user_action = QAction("Edit User",self)
