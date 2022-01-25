@@ -1,3 +1,4 @@
+# imports------------------------------------------------------
 import xml.etree.ElementTree as ET
 import csv
 import argparse
@@ -16,13 +17,12 @@ import os
 from CHANGSET import *
 from spellchecker import SpellChecker
 
+# spell checker setup & variables-------------------------------
 spell=SpellChecker()
 accepted_words=['multipolygon']
 accepted_hashtags=['#mapwithai','#buildingmapping','#addressmapping','#EdgeCrossingEdgeCheck']
 
-
-
-
+# call get changesets for each selected editor------------------
 def start_get_changesets(main,date_list):
     main.teamList.setColumnCount(9)
     main.teamList.setHeaderLabels(['Name','OSM Username','OSM User Id','Role','Changesets','Total Changes','Misspelled Comments', 'Misspelled Hashtags','Missing Hashtags'])        
@@ -56,10 +56,10 @@ def start_get_changesets(main,date_list):
                 if diff ==0:
                     diff=2
                 missing_hashtags += diff
-        main.team_dict[i].set_changeset_info(new_changesets,total_changes,misspelled_hashtags,missing_hashtags,spell_count,total_changes)
+        main.team_dict[i].set_changeset_info(new_changesets,total_count,misspelled_hashtags,missing_hashtags,spell_count,total_changes)
         main.team_dict[i].display_changeset_info()
 
-
+# get changesets api call--------------------------------------------------
 def get_changesets(user=None, start_time=None, end_time=None, bbox=None):
     query_params = {}
     if user:

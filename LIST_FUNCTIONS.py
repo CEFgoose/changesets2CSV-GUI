@@ -1,4 +1,4 @@
-
+# assign selected editor info when team list clicked---------------------
 def team_list_clicked(main):
     main.selected_indexes=[]
     main.selected_user_ids=[]

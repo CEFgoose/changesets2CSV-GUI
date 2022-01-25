@@ -54,20 +54,21 @@ def query_proceed(main):
 
 def set_mode(main,button):
     today = date.today()
+    yesterday=today-timedelta(days=1)
+    tomorrow=today+timedelta(days=1)
     if button.isChecked():
         main.query_mode=button.text()
     if main.query_mode =="Daily":
-        yesterday=today-timedelta(days=1)
         main.query_start_date=yesterday
-        main.query_end_date=today
+        main.query_end_date=tomorrow
         get_dates(main,main.query_start_date,main.query_end_date)
     elif main.query_mode =='Weekly':
         main.query_start_date=today-timedelta(days=7)
-        main.query_end_date=today
+        main.query_end_date=tomorrow
         get_dates(main,main.query_start_date,main.query_end_date)
     elif main.query_mode =="Monthly":
         main.query_start_date=today-timedelta(days=31)
-        main.query_end_date=today
+        main.query_end_date=tomorrow
         get_dates(main,main.query_start_date,main.query_end_date)
     elif main.query_mode =="Manual":
         pass

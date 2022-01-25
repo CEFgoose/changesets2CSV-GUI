@@ -1,15 +1,16 @@
+# imports----------------------------------------------------------------
 from PyQt5.QtWidgets import *
 from PyQt5 import QtCore
 from EDITOR import EDITOR
 
+# open edit user modal---------------------------------------------------
 def open_edit_user_widget(main,users):
     count=len(users)
     counter=0
     user=main.team_dict[users[0]]
     edit_user_widget(main,user=user)
 
-
-
+# edit user modal layout-------------------------------------------------
 def edit_user_widget(main,user=None):
     main.edit_user_widget=QWidget()
     main.edit_user_widget.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint)
@@ -60,7 +61,8 @@ def edit_user_widget(main,user=None):
     cancel_button.clicked.connect(lambda:cancel(main))
     button_box_layout.addWidget(cancel_button)
     main.edit_user_widget.show()
-
+    
+# save changes to selected editor--------------------------------------
 def save(main,user):
     if user is not None:
         user.name=main.edit_name_field.text()
@@ -79,5 +81,6 @@ def save(main,user):
                 i['role']=user.role
     main.edit_user_widget.close()
 
+# discard changes and close edit user modal---------------------------
 def cancel(main):
     main.edit_user_widget.close()

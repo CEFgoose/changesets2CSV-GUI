@@ -54,7 +54,15 @@ def save(main,user):
     user.list_entry=QTreeWidgetItem()
     main.teamList.addTopLevelItem(user.list_entry)
     user.display_basic_info()
-    main.team_dict[user.osm_user_id]=user
+    if main.team_dict:
+        main.team_dict[user.osm_user_id]=user
+
+    else:
+        main.team_obj={}
+        main.team_obj['users']=[]
+        main.team_dict={}
+        main.team_dict[user.osm_user_id]=user
+
     user_obj={
         'role':user.role,
         'name':user.name,
