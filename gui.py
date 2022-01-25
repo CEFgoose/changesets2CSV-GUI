@@ -19,6 +19,7 @@ from LIST_FUNCTIONS import *
 class MainWindow(QMainWindow):
     def __init__(self, *args, **kwargs):
         super(MainWindow, self).__init__(*args, **kwargs)
+        self.selected_user_ids=[]
         self.query_mode=None
         self.display_mode='basic'
         self.filters = ""
@@ -106,12 +107,17 @@ class MainWindow(QMainWindow):
             self.get_changesets.triggered.connect(lambda:changesets_mode_widget(self))
             processMenu.addAction(self.get_changesets) 
 # edit menu-------------------------------------------
+
+            self.add_user_action = QAction("Add User",self)
+            self.add_user_action.triggered.connect(lambda:open_edit_user_widget(self,self.selected_user_ids))
+            editMenu.addAction(self.add_user_action) 
+
             self.edit_user_action = QAction("Edit User",self)
             self.edit_user_action.triggered.connect(lambda:open_edit_user_widget(self,self.selected_user_ids))
             editMenu.addAction(self.edit_user_action) 
 
             self.delete_user_action = QAction("Delete User",self)
-            #self.delete_user_action.triggered.connect(lambda:import_team_json(self))
+            self.delete_user_action.triggered.connect(lambda:delete_users(self))
             editMenu.addAction(self.delete_user_action) 
 
         # #---------------------------------------
@@ -124,6 +130,15 @@ class MainWindow(QMainWindow):
         # self.getChangesetsButton.setText("get changesets")
         # self.getChangesetsButton.clicked.connect(lambda:get_changesets("10626695"))
         # self.centralFrameLayout.addWidget(self.getChangesetsButton)
+    def closeEvent(self, event):
+        print("closing")
+        if self.team_obj != self.loaded_team_obj:
+            save_team_file(self)
+        self.deleteLater()
+        self.close()
+
+
+
 def main(args):
         app = QApplication(args)
         main=MainWindow()

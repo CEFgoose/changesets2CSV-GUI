@@ -15,9 +15,14 @@ import logging
 import os
 from CHANGSET import *
 from spellchecker import SpellChecker
+
 spell=SpellChecker()
 accepted_words=['multipolygon']
-accepted_hashtags=['#mapwithai','#buildingmapping','#addressmapping']
+accepted_hashtags=['#mapwithai','#buildingmapping','#addressmapping','#EdgeCrossingEdgeCheck']
+
+
+
+
 def start_get_changesets(main,date_list):
     main.teamList.setColumnCount(9)
     main.teamList.setHeaderLabels(['Name','OSM Username','OSM User Id','Role','Changesets','Total Changes','Misspelled Comments', 'Misspelled Hashtags','Missing Hashtags'])        
@@ -28,15 +33,12 @@ def start_get_changesets(main,date_list):
         spell_count=0
         misspelled_hashtags=0
         missing_hashtags=0
-        total_comments_misspelled=0
         for j in date_list:
             get_changeset_list=get_changesets(i,j[0],j[1])
             for k in get_changeset_list:
                 new_changesets.append(k)
             total_count+=len(get_changeset_list)
-        main.team_dict[i].new_changesets_count=total_count
-        main.team_dict[i].new_changesets_list=new_changesets
-        for l in main.team_dict[i].new_changesets_list:
+        for l in new_changesets:
             total_changes+=int(l.changes)
             misspelled = spell.unknown(l.comment)
             spell_count+=len(misspelled)
@@ -54,15 +56,9 @@ def start_get_changesets(main,date_list):
                 if diff ==0:
                     diff=2
                 missing_hashtags += diff
-        main.team_dict[i].total_misspelled_hashtags=misspelled_hashtags
-        main.team_dict[i].total_missing_hashtags=missing_hashtags
-        main.team_dict[i].total_misspelled_comments=spell_count
-        main.team_dict[i].total_new_changes=total_changes
-        main.team_dict[i].list_entry.setText(4, str(total_count))
-        main.team_dict[i].list_entry.setText(5, str(main.team_dict[i].total_new_changes))
-        main.team_dict[i].list_entry.setText(6, str(main.team_dict[i].total_misspelled_comments))
-        main.team_dict[i].list_entry.setText(7, str(main.team_dict[i].total_misspelled_hashtags))
-        main.team_dict[i].list_entry.setText(8, str(main.team_dict[i].total_missing_hashtags))
+        main.team_dict[i].set_changeset_info(new_changesets,total_changes,misspelled_hashtags,missing_hashtags,spell_count,total_changes)
+        main.team_dict[i].display_changeset_info()
+
 
 def get_changesets(user=None, start_time=None, end_time=None, bbox=None):
     query_params = {}
@@ -127,45 +123,10 @@ def get_changesets(user=None, start_time=None, end_time=None, bbox=None):
                             i=i.split(",")[0]
                         if i != '':
                             commentText.append(i)
-
-
                 comment = commentText
-                # comment = str(commentText)
-                # comment=comment.replace("'","")
-                # comment=comment.replace("[","")
-                # comment=comment.replace("]","")
-                # comment=comment.replace(",","")
             except:
                 logging.exception('e')
             changeset=CHANGESET(set_id,set_created,set_changes,set_closed,hashtags,source,comment)
             changesets.append(changeset)
-
     return changesets
-    # print(len(entries))
-    # print(entries[0])
-    # entries=json.loads(entries)
-    # entries=str(entries).split("</changeset>")
-    #sprint(len(entries))
-
-        # root = ET.fromstring(result.text)
-        # sets = root.findall("changeset")
-        # changesets.extend(sets)
-        # dateFormat = "%Y-%m-%dT%H:%M:%SZ"
-        # while len(sets) >= 100:
-        #     new_end = datetime.strptime(
-        #         sets[-1].get("closed_at"), dateFormat
-        #     ) - timedelta(0, 5)
-        #     new_end = new_end.strftime(dateFormat)
-        #     start_time = "1970-01-01" if not start_time else start_time
-        #     query_params["time"] = ",".join([start_time, new_end])
-        #     result = session.get(api_url, params=query_params).text
-        #     root = ET.fromstring(result)
-        #     sets = root.findall("changeset")
-        #     changesets.extend(sets)
-
-    # except Exception as e:
-    #     print("Error with calling the API: " + str(e))
-    # entry=json.loads(changesets[0])
-    # print(entry)
-    #return changesets
 

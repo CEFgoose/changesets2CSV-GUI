@@ -57,14 +57,14 @@ def edit_user_widget(main,user=None):
     role_label.setText("Role")
     textfield_box_layout.addWidget(role_label)
 
-    edit_role_field=QLineEdit()
-    textfield_box_layout.addWidget(edit_role_field)
+    main.edit_role_field=QLineEdit()
+    textfield_box_layout.addWidget(main.edit_role_field)
     if user is not None:
         edit_user_label.setText("Edit User: %s"%(user.name))
         main.edit_name_field.setText(user.name)
         main.edit_username_field.setText(user.osm_username)
         main.edit_userid_field.setText(user.osm_user_id)
-        edit_role_field.setText(user.role)
+        main.edit_role_field.setText(user.role)
     else:
         edit_user_label.setText("Add New User:")    
 
@@ -81,7 +81,7 @@ def edit_user_widget(main,user=None):
 
     cancel_button=QPushButton()
     cancel_button.setText("Cancel")
-    cancel_button.clicked.connect(lambda:cancel(main,user))
+    cancel_button.clicked.connect(lambda:cancel(main))
     button_box_layout.addWidget(cancel_button)
 
     main.edit_user_widget.show()
@@ -89,10 +89,27 @@ def edit_user_widget(main,user=None):
 
 
 def save(main,user):
-    user.name=main.edit_name_field.text()
-    user.username=main.edit_username_field.text()
-    user.user_id=main.edit_userid_field.text()
-    user.role=main.edit_role_field.text()
+    if user is not None:
+        user.name=main.edit_name_field.text()
+        user.username=main.edit_username_field.text()
+        user.user_id=main.edit_userid_field.text()
+        user.role=main.edit_role_field.text()
+        user.list_entry.setText(0, str(user.name))
+        user.list_entry.setText(1, str(user.osm_username))
+        user.list_entry.setText(2, str(user.osm_user_id))
+        user.list_entry.setText(3, str(user.role))
+        
+        for i in  main.team_obj['users']:
+            if i['user_id']==user.osm_user_id:
+                i['name']=user.name 
+                i['username']=user.osm_username
+                i['user_id']=user.osm_user_id
+                i['role']=user.role
+    else:
+        pass
+    main.edit_user_widget.close()
+
+
 def cancel(main):
     main.edit_user_widget.close()
     
