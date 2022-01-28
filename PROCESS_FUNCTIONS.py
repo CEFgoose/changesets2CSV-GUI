@@ -1,5 +1,5 @@
 # imports------------------------------------------------------
-import xml.etree.ElementTree as ET
+# import xml.etree.ElementTree as ET
 import csv
 import argparse
 import requests
