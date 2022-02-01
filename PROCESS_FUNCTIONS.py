@@ -1,5 +1,5 @@
 # imports------------------------------------------------------
-# import xml.etree.ElementTree as ET
+import xml.etree.ElementTree as ET
 import csv
 import argparse
 import requests
@@ -22,8 +22,8 @@ spell=SpellChecker()
 
 # call get changesets for each selected editor------------------
 def start_get_changesets(main,date_list):
-    main.teamList.setColumnCount(9)
-    main.teamList.setHeaderLabels(['Name','OSM Username','OSM User Id','Role','Changesets','Total Changes','Misspelled Comments', 'Misspelled Hashtags','Missing Hashtags'])        
+    main.teamList.setColumnCount(12)
+    main.teamList.setHeaderLabels(['Name','OSM Username','OSM User Id','Role','Changesets','Total Changes','Added','Modified','Deleted','Misspelled Comments', 'Misspelled Hashtags','Missing Hashtags'])        
     for i in main.selected_user_ids:
         new_changesets=[]
         total_count=0
@@ -31,11 +31,19 @@ def start_get_changesets(main,date_list):
         spell_count=0
         misspelled_hashtags=0
         missing_hashtags=0
+        additions_count=0
+        modification_count=0
+        deleted_count=0
         for j in date_list:
             get_changeset_list=get_changesets(i,j[0],j[1])
             for k in get_changeset_list:
                 new_changesets.append(k)
+                additions_count +=k.added
+                modification_count +=k.modified
+                deleted_count +=k.deleted
+
             total_count+=len(get_changeset_list)
+
         for l in new_changesets:
             total_changes+=int(l.changes)
             misspelled = spell.unknown(l.comment)
@@ -54,7 +62,7 @@ def start_get_changesets(main,date_list):
                 if diff ==0:
                     diff=2
                 missing_hashtags += diff
-        main.team_dict[i].set_changeset_info(new_changesets,total_count,misspelled_hashtags,missing_hashtags,spell_count,total_changes)
+        main.team_dict[i].set_changeset_info(new_changesets,total_count,misspelled_hashtags,missing_hashtags,spell_count,total_changes,additions_count,modification_count,deleted_count)
         main.team_dict[i].display_changeset_info()
 
 # get changesets api call--------------------------------------------------
@@ -80,10 +88,12 @@ def get_changesets(user=None, start_time=None, end_time=None, bbox=None):
     entries=entries.split("</changeset>")
     entries.pop(-1)
     if len(entries)>0:
+        #print(entries)
         entries[0]=str(entries[0].rsplit("""<?xml version="1.0" encoding="UTF-8"?>""",2)[1])
         entries[0]=str(entries[0].rsplit('/">',1)[1])
         #print(entries[0])
         for i in entries:
+
             comment=""
             source=""
             hashtags=[]
@@ -99,6 +109,7 @@ def get_changesets(user=None, start_time=None, end_time=None, bbox=None):
             set_changes=int(set_changes.split('"')[0])
             set_closed=info[6].split('closed_at="')[1]
             set_closed=set_closed.split('"')[0]
+            count_new_modified_deleted(set_id)
             try:
                 tags=entry[1]
                 tags=tags.strip()
@@ -124,7 +135,23 @@ def get_changesets(user=None, start_time=None, end_time=None, bbox=None):
                 comment = commentText
             except:
                 logging.exception('e')
-            changeset=CHANGESET(set_id,set_created,set_changes,set_closed,hashtags,source,comment)
+            AMD_info= count_new_modified_deleted(set_id)
+            added=AMD_info['Added']   
+            modified=AMD_info['Modified'] 
+            deleted=AMD_info['Deleted'] 
+            changeset=CHANGESET(set_id,set_created,set_changes,set_closed,hashtags,source,comment,added,modified,deleted)
             changesets.append(changeset)
     return changesets
 
+def count_new_modified_deleted(changesetID):
+    api_url = "https://www.openstreetmap.org/api/0.6/changeset/{changesetID}/download".format(
+        changesetID=changesetID
+    )
+    session = CacheControl(requests.session())
+    result = session.get(api_url).text
+    root = ET.fromstring(result)
+    newModifiedDeleted = {}
+    newModifiedDeleted["Added"] = len(root.findall("create"))
+    newModifiedDeleted["Modified"] = len(root.findall("modify"))
+    newModifiedDeleted["Deleted"] = len(root.findall("delete"))
+    return(newModifiedDeleted)

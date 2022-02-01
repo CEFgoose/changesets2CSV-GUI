@@ -125,6 +125,7 @@ class MainWindow(QMainWindow):
         if self.team_obj != self.loaded_team_obj:
             autosave_team_file(self)
         self.deleteLater()
+        self.changeset_mode_widget.close()
         self.close()
 # main loop-------------------------------------------
 def main(args):

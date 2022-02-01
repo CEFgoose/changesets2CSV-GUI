@@ -37,10 +37,10 @@ def changesets_mode_widget(main):
     monthly_button.toggled.connect(lambda:set_mode(main,monthly_button))
     mode_button_box_layout.addWidget(monthly_button)
 
-    manual_button=QRadioButton()
-    manual_button.setText('Manual')
-    manual_button.toggled.connect(lambda:set_mode(main,manual_button))
-    mode_button_box_layout.addWidget(manual_button)
+    # manual_button=QRadioButton()
+    # manual_button.setText('Manual')
+    # manual_button.toggled.connect(lambda:set_mode(main,manual_button))
+    # mode_button_box_layout.addWidget(manual_button)
 
     proceed_button=QPushButton()
     proceed_button.setText("Proceed")
