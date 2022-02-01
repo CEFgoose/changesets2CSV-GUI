@@ -16,23 +16,13 @@ def import_team_json(main):
                 main.team_obj = json.loads(team_obj)
                 main.loaded_team_obj=team_obj
             else:
-                today = date.today()
-                main.team_obj={}
-                main.team_obj['users']=[]
-                main.team_obj['properties']={
-                    'team':'TEAM',
-                    'version':0.1,
-                    'date_created':str(today),
-                    'last_modified':str(today)
-                }
+
                 team_obj=json.loads(team_obj)
                 for i in team_obj['users']:
                     main.team_obj['users'].append(i)
                 
                 main.loaded_team_obj=main.team_obj
-                autosave_team_file(main)
-
-        
+                autosave_team_file(main)   
         parse_editors(main,main.team_obj)
 
 # parse editors from json file--------------------
@@ -53,18 +43,25 @@ def autosave_team_file(main):
         main.team_obj['properties']['last_modified']=str(date.today())
         with open (main.team_file,'w+')as save_file:
             json.dump(main.team_obj, save_file)
-    #else:
-        # 
-        # main.team_obj={}
-        # main.team_obj['properties']={
-        #     'team':'team',
-        #     'version':'0.1',
-        #     'date_created':str(today),
-        #     'last_modified':str(today)
-        # }
-        # main.team_obj['users']=[]
-        # for i in 
-# open delete users modal-------------------------
+
+
+# manual save team file----------------------------
+def save_team_file(main):
+    if main.team_obj:
+        main.team_obj['properties']['version']+=1
+        main.team_obj['properties']['last_modified']=str(date.today())
+        with open (main.team_file,'w+')as save_file:
+            json.dump(main.team_obj, save_file)
+
+
+def save_settings(main):
+    with open('settings.py', 'w+') as settings_file:
+        settings_file.truncate()
+        settings_file.seek(0)
+        settings_file.writelines('ACCEPTED_HASHTAGS=%s\n'%(main.accepted_hashtags))
+        settings_file.writelines('ACCEPTED_WORDS=%s\n'%(main.accepted_words))
+
+# open delete users modal--------------------------
 def delete_users(main):  
     delete_user_modal(main) 
 

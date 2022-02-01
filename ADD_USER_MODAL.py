@@ -1,6 +1,7 @@
 from PyQt5.QtWidgets import *
 from PyQt5 import QtCore
 from EDITOR import EDITOR
+from datetime import datetime, date, timedelta
 
 def add_user_widget(main,user=None):
     main.add_user_widget=QWidget()
@@ -58,8 +59,15 @@ def save(main,user):
         main.team_dict[user.osm_user_id]=user
 
     else:
+        today = date.today()
         main.team_obj={}
         main.team_obj['users']=[]
+        main.team_obj['properties']={
+            'team':'TEAM',
+            'version':0.1,
+            'date_created':str(today),
+            'last_modified':str(today)
+        }
         main.team_dict={}
         main.team_dict[user.osm_user_id]=user
 

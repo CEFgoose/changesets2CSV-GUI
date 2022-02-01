@@ -16,6 +16,9 @@ from PROCESS_FUNCTIONS import *
 from FILE_FUNCTIONS import *
 from LIST_FUNCTIONS import *
 from ADD_USER_MODAL import *
+from HASHTAGS_MODAL import *
+from COMMENTS_MODAL import *
+from settings import *
 # main window class setup-------------------------------
 class MainWindow(QMainWindow):
     def __init__(self, *args, **kwargs):
@@ -33,6 +36,9 @@ class MainWindow(QMainWindow):
         self.exportDirectory=os.path.join(self.importDirectory,"Changeset_reports")
         if not os.path.isdir(self.exportDirectory):
             os.makedirs(self.exportDirectory)
+        self.accepted_words=ACCEPTED_WORDS
+        self.accepted_hashtags=ACCEPTED_HASHTAGS
+
 # main gui layout---------------------------------------
         self.setWindowTitle("CHANGESETS TO CSV")
         self.resize(2060,1110)
@@ -87,7 +93,7 @@ class MainWindow(QMainWindow):
             self.import_team_action.triggered.connect(lambda:import_team_json(self))
             fileMenu.addAction(self.import_team_action) 
             self.save_team_action = QAction("Save Team List",self)
-            #self.save_team_action.triggered.connect(lambda:import_team_json(self))
+            self.save_team_action.triggered.connect(lambda:save_team_file(self))
             fileMenu.addAction(self.save_team_action) 
 # process menu----------------------------------------
             self.get_changesets = QAction("Get OSM Changesets",self)
@@ -100,11 +106,22 @@ class MainWindow(QMainWindow):
             self.edit_user_action = QAction("Edit User",self)
             self.edit_user_action.triggered.connect(lambda:open_edit_user_widget(self,self.selected_user_ids))
             editMenu.addAction(self.edit_user_action) 
+
             self.delete_user_action = QAction("Delete User",self)
             self.delete_user_action.triggered.connect(lambda:delete_users(self))
             editMenu.addAction(self.delete_user_action) 
+
+            self.edit_accepted_hashtags = QAction("Edit Accepted Hashtags",self)
+            self.edit_accepted_hashtags.triggered.connect(lambda:hashtag_widget(self))
+            editMenu.addAction(self.edit_accepted_hashtags) 
+
+            self.edit_accepted_comments = QAction("Edit Accepted Comments",self)
+            self.edit_accepted_comments.triggered.connect(lambda:comments_widget(self))
+            editMenu.addAction(self.edit_accepted_comments)             
+
 # close ewindow event---------------------------------
     def closeEvent(self, event):
+        save_settings(self)
         if self.team_obj != self.loaded_team_obj:
             autosave_team_file(self)
         self.deleteLater()

@@ -14,7 +14,6 @@ def delete_user_modal(main):
         main.delete_user_warning.setWindowTitle("Delete User")
         main.delete_user_warning.setText("Are you sure you want to delete the selected users?")
         main.delete_user_warning.show()
-
         returnValue = main.delete_user_warning.exec()
         if returnValue == QMessageBox.Ok:
             for i in main.selected_user_ids:

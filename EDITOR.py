@@ -27,3 +27,13 @@ class EDITOR(object):
         self.list_entry.setText(6, str(self.total_misspelled_comments))
         self.list_entry.setText(7, str(self.total_misspelled_hashtags))
         self.list_entry.setText(8, str(self.total_missing_hashtags))
+
+    def updateBasicInfo(self,name,username,user_id,role):
+        self.name=name
+        self.username=username
+        self.user_id=user_id
+        self.role=role
+        self.list_entry.setText(0, str(self.name))
+        self.list_entry.setText(1, str(self.osm_username))
+        self.list_entry.setText(2, str(self.osm_user_id))
+        self.list_entry.setText(3, str(self.role))      

@@ -65,14 +65,7 @@ def edit_user_widget(main,user=None):
 # save changes to selected editor--------------------------------------
 def save(main,user):
     if user is not None:
-        user.name=main.edit_name_field.text()
-        user.username=main.edit_username_field.text()
-        user.user_id=main.edit_userid_field.text()
-        user.role=main.edit_role_field.text()
-        user.list_entry.setText(0, str(user.name))
-        user.list_entry.setText(1, str(user.osm_username))
-        user.list_entry.setText(2, str(user.osm_user_id))
-        user.list_entry.setText(3, str(user.role))
+        user.updateBasicInfo(main.edit_name_field.text(),main.edit_username_field.text(),main.edit_userid_field.text(),main.edit_role_field.text())
         for i in  main.team_obj['users']:
             if i['user_id']==user.osm_user_id:
                 i['name']=user.name 

@@ -16,11 +16,9 @@ import logging
 import os
 from CHANGSET import *
 from spellchecker import SpellChecker
-
+from settings import *
 # spell checker setup & variables-------------------------------
 spell=SpellChecker()
-accepted_words=['multipolygon']
-accepted_hashtags=['#mapwithai','#buildingmapping','#addressmapping','#EdgeCrossingEdgeCheck']
 
 # call get changesets for each selected editor------------------
 def start_get_changesets(main,date_list):
@@ -43,12 +41,12 @@ def start_get_changesets(main,date_list):
             misspelled = spell.unknown(l.comment)
             spell_count+=len(misspelled)
             for m in misspelled:
-                if m in accepted_words:
+                if m in main.accepted_words:
                     spell_count-=1
                 else:
                     print(m)
             for n in l.hashtags:
-                if n not in accepted_hashtags:
+                if n not in main.accepted_hashtags:
                     print(n)
                     misspelled_hashtags+=1
             if len(l.hashtags)<2:
