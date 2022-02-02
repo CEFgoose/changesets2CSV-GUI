@@ -80,7 +80,6 @@ def get_changesets(user=None, start_time=None, end_time=None, bbox=None):
     if bbox:
         query_params["bbox"] = ",".join(bbox)
     changesets = []
-    #try:
     api_url = "https://api.openstreetmap.org/api/0.6/changesets"
     session = CacheControl(requests.session())
     result = session.get(api_url, params=query_params)
@@ -88,12 +87,9 @@ def get_changesets(user=None, start_time=None, end_time=None, bbox=None):
     entries=entries.split("</changeset>")
     entries.pop(-1)
     if len(entries)>0:
-        #print(entries)
         entries[0]=str(entries[0].rsplit("""<?xml version="1.0" encoding="UTF-8"?>""",2)[1])
         entries[0]=str(entries[0].rsplit('/">',1)[1])
-        #print(entries[0])
         for i in entries:
-
             comment=""
             source=""
             hashtags=[]

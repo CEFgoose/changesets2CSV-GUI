@@ -8,6 +8,7 @@ QMenuBar,QMenu,QAction,QStatusBar,
 QGroupBox,QSplitter,QTabWidget,QFrame,
 QPushButton,QRadioButton,QLabel,
 QLCDNumber,QCalendarWidget)
+import logging
 import os
 import sys
 from CHANGESET_MODAL import *
@@ -148,7 +149,7 @@ class MainWindow(QMainWindow):
             editMenu.addAction(self.edit_user_action) 
 
             self.delete_user_action = QAction("Delete User",self)
-            self.delete_user_action.triggered.connect(lambda:delete_users(self))
+            self.delete_user_action.triggered.connect(lambda:delete_user_modal(self))
             editMenu.addAction(self.delete_user_action) 
 
             self.edit_accepted_hashtags = QAction("Edit Accepted Hashtags",self)
@@ -165,7 +166,10 @@ class MainWindow(QMainWindow):
         if self.team_obj != self.loaded_team_obj:
             autosave_team_file(self)
         self.deleteLater()
-        self.changeset_mode_widget.close()
+        try:
+            self.changeset_mode_widget.close()
+        except Exception as e:
+            print(str(e))
         self.close()
 # main loop-------------------------------------------
 def main(args):
