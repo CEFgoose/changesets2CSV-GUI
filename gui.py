@@ -18,12 +18,14 @@ from LIST_FUNCTIONS import *
 from ADD_USER_MODAL import *
 from HASHTAGS_MODAL import *
 from COMMENTS_MODAL import *
+from CSV_EXPORT import *
 from settings import *
 # main window class setup-------------------------------
 class MainWindow(QMainWindow):
     def __init__(self, *args, **kwargs):
         super(MainWindow, self).__init__(*args, **kwargs)
 # main window variables---------------------------------
+        self.team_name=TEAM_NAME
         self.selected_user_ids=[]
         self.team_dict=False
         self.team_obj=False
@@ -79,8 +81,43 @@ class MainWindow(QMainWindow):
         self.controlBox=QGroupBox()
         self.controlBox.setTitle("Controls")
         self.buttonFrameLayout.addWidget(self.controlBox)
-        self.controlBoxLayout=QVBoxLayout()
-        self.controlBox.setLayout(self.controlBoxLayout)
+        self.control_box_layout=QVBoxLayout()
+        self.controlBox.setLayout(self.control_box_layout)
+
+        self.team_box=QGroupBox()
+        self.team_box.setMaximumHeight(200)
+        self.team_box.setTitle("Team")
+        self.team_box_layout=QVBoxLayout()
+        self.team_box.setLayout(self.team_box_layout)
+
+        self.control_box_layout.addWidget(self.team_box)
+        self.team_name_label=QLabel()
+        self.team_name_label.setText("Team Name:")
+        self.team_box_layout.addWidget(self.team_name_label)
+
+        self.team_name_field=QLineEdit()
+        self.team_name_field.setText(self.team_name)
+        self.team_box_layout.addWidget(self.team_name_field)
+
+        self.team_name_button_box=QGroupBox()
+        self.team_name_button_box.setMaximumHeight(60)
+        self.team_name_button_box_layout=QHBoxLayout()
+        self.team_name_button_box.setLayout( self.team_name_button_box_layout)
+        self.team_box_layout.addWidget(self.team_name_button_box)  
+
+        self.team_name_save_button=QPushButton()      
+        self.team_name_save_button.setText("Save")
+        self.team_name_save_button.clicked.connect(lambda:save_team_name(self))
+        self.team_name_button_box_layout.addWidget(self.team_name_save_button)
+
+        self.team_name_reset_button=QPushButton()      
+        self.team_name_reset_button.setText("Reset")
+        self.team_name_reset_button.setDisabled(True)
+        self.team_name_reset_button.clicked.connect(lambda:reset_team_name(self))
+        self.team_name_button_box_layout.addWidget(self.team_name_reset_button)
+        self.team_name_field.textChanged.connect(lambda:unlock_reset_button(self))
+        self.team_box_layout.addStretch()
+
         self._createMenuBar()
 # construct menu bar----------------------------------
     def _createMenuBar(self):
@@ -95,6 +132,9 @@ class MainWindow(QMainWindow):
             self.save_team_action = QAction("Save Team List",self)
             self.save_team_action.triggered.connect(lambda:save_team_file(self))
             fileMenu.addAction(self.save_team_action) 
+            self.export_csv_action = QAction("Export CSV",self)
+            self.export_csv_action.triggered.connect(lambda:construct_csv_data(self))
+            fileMenu.addAction(self.export_csv_action) 
 # process menu----------------------------------------
             self.get_changesets = QAction("Get OSM Changesets",self)
             self.get_changesets.triggered.connect(lambda:changesets_mode_widget(self))

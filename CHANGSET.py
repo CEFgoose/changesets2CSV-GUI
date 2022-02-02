@@ -1,5 +1,3 @@
-
-
 class CHANGESET(object):
     def __init__ (self, id,date_created,changes,date_closed,hashtags,source,comment,added,modified,deleted):
         self.id=id
@@ -12,4 +10,3 @@ class CHANGESET(object):
         self.added=added
         self.modified=modified
         self.deleted=deleted
-        

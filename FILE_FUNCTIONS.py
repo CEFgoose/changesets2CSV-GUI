@@ -53,15 +53,26 @@ def save_team_file(main):
         with open (main.team_file,'w+')as save_file:
             json.dump(main.team_obj, save_file)
 
-
+# save changed variables to settings---------------
 def save_settings(main):
     with open('settings.py', 'w+') as settings_file:
         settings_file.truncate()
         settings_file.seek(0)
         settings_file.writelines('ACCEPTED_HASHTAGS=%s\n'%(main.accepted_hashtags))
         settings_file.writelines('ACCEPTED_WORDS=%s\n'%(main.accepted_words))
+        settings_file.writelines('TEAM_NAME="%s"\n'%(main.team_name))
 
-# open delete users modal--------------------------
-def delete_users(main):  
-    delete_user_modal(main) 
+# unlock teamname reset button----------------
+def unlock_reset_button(main):
+    main.team_name_reset_button.setDisabled(False)
+
+# save new team name--------------------------
+def save_team_name(main):  
+    main.team_name=main.team_name_field.text()
+    main.team_name_reset_button.setDisabled(True)
+    
+# reset team name--------------------------
+def reset_team_name(main):  
+    main.team_name_field.setText(main.team_name)
+    main.team_name_reset_button.setDisabled(True)
 
