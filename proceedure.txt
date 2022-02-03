@@ -3,3 +3,8 @@
 3. source venv/bin/activate
 4. cd changesets2CSV
 5. python changesets2csv weekly Users-test.json
+
+
+
+pyi-makespec --add-binary="en.json.gz:spellchecker/resources" --windowed  --onefile --noconsole CS2CSV.py
+pyinstaller --noconsole --onefile --windowed CS2CSV.spec         

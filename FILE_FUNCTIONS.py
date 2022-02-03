@@ -4,7 +4,7 @@ import json
 from EDITOR import *
 from DELETE_USER_MODAL import *
 from datetime import datetime, date, timedelta
-
+from PyQt5 import sip
 # import team json file---------------------------
 def import_team_json(main):
     files = QFileDialog.getOpenFileNames(main, main.filters, main.importDirectory, main.select_filters)[0]
@@ -16,15 +16,16 @@ def import_team_json(main):
                 main.team_obj = json.loads(team_obj)
                 main.loaded_team_obj=team_obj
             else:
-
                 team_obj=json.loads(team_obj)
                 for i in team_obj['users']:
                     main.team_obj['users'].append(i)
-                
                 main.loaded_team_obj=main.team_obj
                 autosave_team_file(main)   
+            main.team_name=main.team_obj['properties']['team']
+            main.team_name_field.setText(main.team_name)
         parse_editors(main,main.team_obj)
-
+        main.accepted_words=main.team_obj['properties']['accepted_words']
+        main.accepted_hashtags=main.team_obj['properties']['accepted_hashtags']
 # parse editors from json file--------------------
 def parse_editors(main,team_obj):
     main.team_dict={}
@@ -39,6 +40,7 @@ def parse_editors(main,team_obj):
 # auto-save team file on close--------------------
 def autosave_team_file(main):
     if main.team_obj:
+        main.team_obj['properties']['team']=main.team_name
         main.team_obj['properties']['version']+=.1
         main.team_obj['properties']['last_modified']=str(date.today())
         with open (main.team_file,'w+')as save_file:
@@ -48,6 +50,7 @@ def autosave_team_file(main):
 # manual save team file----------------------------
 def save_team_file(main):
     if main.team_obj:
+        main.team_obj['properties']['team']=main.team_name
         main.team_obj['properties']['version']+=1
         main.team_obj['properties']['last_modified']=str(date.today())
         with open (main.team_file,'w+')as save_file:
@@ -55,13 +58,8 @@ def save_team_file(main):
 
 # save changed variables to settings---------------
 def save_settings(main):
-    with open('settings.py', 'w+') as settings_file:
-        settings_file.truncate()
-        settings_file.seek(0)
-        settings_file.writelines('ACCEPTED_HASHTAGS=%s\n'%(main.accepted_hashtags))
-        settings_file.writelines('ACCEPTED_WORDS=%s\n'%(main.accepted_words))
-        settings_file.writelines('TEAM_NAME="%s"\n'%(main.team_name))
-
+    main.team_obj['properties']['accepted_words']=main.accepted_words
+    main.team_obj['properties']['accepted_hashtags']=main.accepted_hashtags
 # unlock teamname reset button----------------
 def unlock_reset_button(main):
     main.team_name_reset_button.setDisabled(False)

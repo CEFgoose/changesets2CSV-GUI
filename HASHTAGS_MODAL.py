@@ -1,9 +1,9 @@
 # imports----------------------------------------------------------------
 from PyQt5.QtWidgets import *
-from PyQt5.QtCore import *
+from PyQt5.QtCore import Qt
 from PyQt5 import QtCore
-from settings import *
 
+from PyQt5 import sip
 # edit user modal layout-------------------------------------------------
 def hashtag_widget(main):
     main.hashtag_widget=QWidget()

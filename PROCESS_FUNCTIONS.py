@@ -16,7 +16,7 @@ import logging
 import os
 from CHANGSET import *
 from spellchecker import SpellChecker
-from settings import *
+
 # spell checker setup & variables-------------------------------
 spell=SpellChecker()
 

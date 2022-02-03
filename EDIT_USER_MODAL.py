@@ -2,7 +2,7 @@
 from PyQt5.QtWidgets import *
 from PyQt5 import QtCore
 from EDITOR import EDITOR
-
+from PyQt5 import sip
 # open edit user modal---------------------------------------------------
 def open_edit_user_widget(main,users):
     count=len(users)

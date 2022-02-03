@@ -2,7 +2,8 @@
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
 from PyQt5 import QtCore
-from settings import *
+
+from PyQt5 import sip
 
 # edit user modal layout-------------------------------------------------
 def comments_widget(main):

@@ -1,6 +1,7 @@
 from PyQt5.QtWidgets import *
 from PyQt5 import QtCore
 from EDITOR import EDITOR
+from PyQt5 import sip
 from datetime import datetime, date, timedelta
 
 def add_user_widget(main,user=None):
