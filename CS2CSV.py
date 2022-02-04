@@ -1,14 +1,14 @@
 # imports-----------------------------------------------
 from PyQt5 import QtCore
 from PyQt5.QtCore import *
-from PyQt5.QtWidgets import(QMainWindow,QApplication,QWidget,
+from PyQt5.QtWidgets import(
+QMainWindow,QApplication,QWidget,
 QGridLayout,QHBoxLayout,QVBoxLayout,
-QMenuBar,QMenu,QAction,QStatusBar,
-QGroupBox,QSplitter,QTabWidget,QFrame,
-QPushButton,QRadioButton,QLabel,
-QLCDNumber,QCalendarWidget)
+QAction,QGroupBox,QSplitter,
+QFrame,QPushButton,QLabel,
+)
 import logging
-import os
+import os 
 import sys
 from CHANGESET_MODAL import *
 from EDIT_USER_MODAL import *
@@ -19,9 +19,6 @@ from ADD_USER_MODAL import *
 from HASHTAGS_MODAL import *
 from COMMENTS_MODAL import *
 from CSV_EXPORT import *
-
-
-
 
 def resource_path(relative_path):
     """ Get absolute path to resource, works for dev and for PyInstaller """
