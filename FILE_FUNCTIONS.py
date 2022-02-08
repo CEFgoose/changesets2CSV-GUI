@@ -10,9 +10,10 @@ def import_team_json(main):
     files = QFileDialog.getOpenFileNames(main, main.filters, main.importDirectory, main.select_filters)[0]
     if len(files)>0:
         main.team_file=files[0]
+        print(main.team_file)
         with open(main.team_file, 'r') as team_file:
             team_obj=team_file.read()
-            if not main.team_obj:
+            if main.team_obj == False:
                 main.team_obj = json.loads(team_obj)
                 main.loaded_team_obj=team_obj
             else:
@@ -31,15 +32,13 @@ def parse_editors(main,team_obj):
     main.team_dict={}
     for i in team_obj['users']:
         editor=EDITOR(i['name'],i['username'],i['user_id'],i['role']) 
-        item=QTreeWidgetItem()
-        editor.list_entry=item
-        editor.display_basic_info()
-        main.teamList.addTopLevelItem(editor.list_entry)
+        editor.construct_list_item(main)
         main.team_dict[editor.osm_user_id]=editor
 
 # auto-save team file on close--------------------
 def autosave_team_file(main):
-    if main.team_obj:
+    print(len(main.team_obj['users']))
+    if len(main.team_obj['users'])>0:
         main.team_obj['properties']['team']=main.team_name
         main.team_obj['properties']['version']+=.1
         main.team_obj['properties']['last_modified']=str(date.today())

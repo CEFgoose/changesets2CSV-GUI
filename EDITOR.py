@@ -1,3 +1,5 @@
+
+from PyQt5.QtWidgets import QTreeWidgetItem
 class EDITOR(object):
     def __init__ (self, name,username,user_id,role):
         self.name=name
@@ -52,6 +54,16 @@ class EDITOR(object):
         self.list_entry.setText(1, str(self.osm_username))
         self.list_entry.setText(2, str(self.osm_user_id))
         self.list_entry.setText(3, str(self.role))      
+
+    def construct_list_item(self,main):
+        self.list_entry=QTreeWidgetItem()
+        if main.display_mode =="basic":
+            self.display_basic_info()
+        else:
+            self.display_basic_info()
+            self.display_changeset_info()
+        main.teamList.addTopLevelItem(self.list_entry)
+
 
     def construct_csv_data(self):
         obj={}

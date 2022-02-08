@@ -25,3 +25,11 @@ def delete_user_modal(main):
                         del main.team_obj['users'][index]            
         elif returnValue == QMessageBox.Cancel:
             main.delete_user_warning.close()
+        restack_list(main)
+
+def restack_list(main):
+    main.teamList.clear()
+    for i in main.team_dict.values():
+        i.construct_list_item(main)
+
+

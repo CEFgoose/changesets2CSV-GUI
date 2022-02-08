@@ -1,0 +1,9 @@
+
+Create spec file:
+
+pyi-makespec --add-binary="en.json.gz:spellchecker/resources" --windowed  --onefile --noconsole CS2CSV.py -i /Users/cefgoose/Desktop/cs2csv_icon.png
+
+
+Compile app from spec:
+
+pyinstaller --noconsole --onefile --windowed CS2CSV.spec
