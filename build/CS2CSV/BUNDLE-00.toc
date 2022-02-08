@@ -1,3 +1,0 @@
-([('CS2CSV',
-   '/Users/cefgoose/Documents/CS2CSV/changesets2CSV/dist/CS2CSV',
-   'EXECUTABLE')],)
