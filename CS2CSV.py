@@ -19,7 +19,7 @@ from ADD_USER_MODAL import *
 from HASHTAGS_MODAL import *
 from COMMENTS_MODAL import *
 from CSV_EXPORT import *
-
+from COMMENT_REPORT_MODAL import *
 def resource_path(relative_path):
     """ Get absolute path to resource, works for dev and for PyInstaller """
     try:
@@ -150,10 +150,15 @@ class MainWindow(QMainWindow):
             self.get_changesets = QAction("Get OSM Changesets",self)
             self.get_changesets.triggered.connect(lambda:changesets_mode_widget(self))
             processMenu.addAction(self.get_changesets) 
+
+            self.comment_report = QAction("Comment & Hashtag Report",self)
+            self.comment_report.triggered.connect(lambda:comment_report_widget(self, self.team_dict[self.selected_user_ids[0]]))
+            processMenu.addAction(self.comment_report) 
 # edit menu-------------------------------------------
             self.add_user_action = QAction("Add User",self)
             self.add_user_action.triggered.connect(lambda:add_user_widget(self,self.selected_user_ids))
             editMenu.addAction(self.add_user_action) 
+
             self.edit_user_action = QAction("Edit User",self)
             self.edit_user_action.triggered.connect(lambda:open_edit_user_widget(self,self.selected_user_ids))
             editMenu.addAction(self.edit_user_action) 

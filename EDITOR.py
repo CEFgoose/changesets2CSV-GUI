@@ -7,6 +7,9 @@ class EDITOR(object):
         self.osm_user_id=user_id
         self.role=role
         self.new_changesets=[]
+        self.misspelled_words=[]
+        self.misspelled_hashtags=[]
+        self.missing_hashtags=[]
         self.list_entry=None  #stores the correspoding QTreeWidget Item
     #------------CHANGESET STATS-----------------------------------------
         self.new_changesets_count=0

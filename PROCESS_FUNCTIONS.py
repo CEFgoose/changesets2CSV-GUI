@@ -52,16 +52,17 @@ def start_get_changesets(main,date_list):
                 if m in main.accepted_words:
                     spell_count-=1
                 else:
-                    print(m)
+                    main.team_dict[i].misspelled_words.append((m,l.id))
             for n in l.hashtags:
                 if n not in main.accepted_hashtags:
-                    print(n)
                     misspelled_hashtags+=1
+                    main.team_dict[i].misspelled_hastags.append((n,l.id))
             if len(l.hashtags)<2:
                 diff=len(l.hashtags)
                 if diff ==0:
                     diff=2
                 missing_hashtags += diff
+                main.team_dict[i].missing_hashtag_changeset_ids.append((diff,l.id))
         main.team_dict[i].set_changeset_info(new_changesets,total_count,misspelled_hashtags,missing_hashtags,spell_count,total_changes,additions_count,modification_count,deleted_count)
         main.team_dict[i].display_changeset_info()
 
