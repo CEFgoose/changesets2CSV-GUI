@@ -77,7 +77,7 @@ def get_changesets(user=None, start_time=None, end_time=None, bbox=None):
         if type(end_time) is list and len(end_time) == 1:
             end_time = end_time[0].strftime("%Y-%m-%d")
         query_params["time"] = ",".join([start_time, end_time])
-        print(query_params["time"])
+
     if bbox:
         query_params["bbox"] = ",".join(bbox)
     changesets = []

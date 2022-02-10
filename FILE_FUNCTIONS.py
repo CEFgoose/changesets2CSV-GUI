@@ -10,7 +10,6 @@ def import_team_json(main):
     files = QFileDialog.getOpenFileNames(main, main.filters, main.importDirectory, main.select_filters)[0]
     if len(files)>0:
         main.team_file=files[0]
-        print(main.team_file)
         with open(main.team_file, 'r') as team_file:
             team_obj=team_file.read()
             if main.team_obj == False:
@@ -37,7 +36,6 @@ def parse_editors(main,team_obj):
 
 # auto-save team file on close--------------------
 def autosave_team_file(main):
-    print(len(main.team_obj['users']))
     if len(main.team_obj['users'])>0:
         main.team_obj['properties']['team']=main.team_name
         main.team_obj['properties']['version']+=.1

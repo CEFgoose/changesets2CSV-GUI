@@ -29,6 +29,7 @@ def comment_report_widget(main,editor):
 
     comments_list=QTreeWidget()
     comments_list.setColumnCount(2)
+    comments_list.doubleClicked.connect(lambda:comment_list_clicked(main,comments_list))
     comments_list.setHeaderLabels(["Misspelled Word","Changeset ID"])
     comment_list_box_layout.addWidget(comments_list)
 
@@ -58,33 +59,6 @@ def comment_report_widget(main,editor):
     missing_hashtag_list.setHeaderLabels(["Hashtags Missing","Changeset ID"])
     missing_hashtag_list_box_layout.addWidget(missing_hashtag_list)
 
-    # edit_field=QLineEdit()
-    # control_box_layout.addWidget(edit_field)
-
-    # edit_button=QPushButton()
-    # edit_button.setText("Edit")
-    # edit_button.clicked.connect(lambda:edit_hashtag(comments_list,edit_field,edit_button))
-    # control_box_layout.addWidget(edit_button)
-
-    # add_button=QPushButton()
-    # add_button.setText("Add")
-    # add_button.clicked.connect(lambda:add_comment(main,comments_list,edit_field))
-    # control_box_layout.addWidget(add_button)
-
-    # delete_button=QPushButton()
-    # delete_button.setText("Delete")
-    # delete_button.clicked.connect(lambda:delete_comment(comments_list))
-    # control_box_layout.addWidget(delete_button)
-
-    # save_button=QPushButton()
-    # save_button.setText("Save")
-    # save_button.clicked.connect(lambda:save_comments(main,comments_list))
-    # control_box_layout.addWidget(save_button)
-
-    # clear_button=QPushButton()
-    # clear_button.setText("Clear")
-    # clear_button.clicked.connect(lambda:clear_comment(edit_field,edit_button))
-    # control_box_layout.addWidget(clear_button)
 
     populate_comment_report_list(main,editor,comments_list,hashtag_list,missing_hashtag_list)
     main.comments_report_widget.show()
@@ -105,39 +79,22 @@ def populate_comment_report_list(main,editor,comments_list,hashtag_list,missing_
         item.setText(0,i[0])
         item.setText(1,i[1])
         missing_hashtag_list.addTopLevelItem(item)  
-# def edit_hashtag(comments_list,text_field,button):
-#     selected_comment=comments_list.selectedItems()[0]
-#     if button.text()=="Edit":
-#         text_field.setText(selected_comment.text(0))
-#         button.setText("Apply")
-#     elif button.text()=='Apply':
-#         selected_comment.setText(0,text_field.text())
-#         text_field.setText('')
-#         button.setText("Edit") 
 
-# def add_comment(main,comments_list,text_field):
-#     if text_field.text() not in main.accepted_words:
-#         item=QTreeWidgetItem()
-#         item.setText(0,text_field.text())
-#         text_field.setText("")
-#         comments_list.addTopLevelItem(item)
+def comment_list_clicked(main,inList):
+    main.selected_word=inList.selectedItems()[0].text(0)
+    accept_word_modal(main)
 
-# def delete_comment(comments_list):
-#     selected_comment=comments_list.selectedItems()[0]
-#     itemIndex=comments_list.indexOfTopLevelItem(selected_comment)
-#     comments_list.takeTopLevelItem(itemIndex)
-
-# def clear_comment(text_field,button):
-#     text_field.setText('')
-#     button.setText("Edit")
-
-# def save_comments(main,comments_list):
-#     main.accepted_words=[]
-#     root = comments_list.invisibleRootItem()
-#     child_count = root.childCount()
-#     for i in range(child_count):
-#         item = root.child(i)
-#         word = item.text(0) # text at first (0) column
-#         main.accepted_words.append(word)
-#     main.comments_widget.close()    
-
+def accept_word_modal(main):
+    main.accept_word_widget=QMessageBox()
+    main.accept_word_widget.setStandardButtons(QMessageBox.Ok | QMessageBox.Cancel)
+    main.accept_word_widget.setGeometry(500,500,500,500)
+    main.accept_word_widget.setWindowTitle("Add accepted word")
+    main.accept_word_widget.setText('Are you sure you want to add "%s" to accepted comment words?'%(main.selected_word))
+    main.accept_word_widget.show()
+    returnValue = main.accept_word_widget.exec()
+    if returnValue == QMessageBox.Ok:
+        if main.selected_word not in main.accepted_words:
+            main.accepted_words.append(main.selected_word)
+            
+    elif returnValue == QMessageBox.Cancel:
+        main.accept_word_widget.close()

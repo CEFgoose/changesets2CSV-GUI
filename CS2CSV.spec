@@ -41,11 +41,11 @@ exe = EXE(
     target_arch=None,
     codesign_identity=None,
     entitlements_file=None,
-    icon='/Users/cefgoose/Desktop/cs2csv_icon.png',
+    icon='/Users/cefgoose/Desktop/cs2csv.png',
 )
 app = BUNDLE(
     exe,
     name='CS2CSV.app',
-    icon='/Users/cefgoose/Desktop/cs2csv_icon.png',
+    icon='/Users/cefgoose/Desktop/cs2csv.png',
     bundle_identifier=None,
 )

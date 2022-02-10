@@ -10,12 +10,11 @@ def changesets_mode_widget(main):
     main.display_mode='expanded'
     main.changeset_mode_widget=QWidget()
     main.changeset_mode_widget.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint)
-    main.changeset_mode_widget.setWindowTitle("Query Mode")
-    mode_widget_layout=QGridLayout()
-    main.changeset_mode_widget.setLayout(mode_widget_layout)
+    main.mode_widget_layout=QGridLayout()
+    main.changeset_mode_widget.setLayout(main.mode_widget_layout)
     
     mode_button_box=QGroupBox()
-    mode_widget_layout.addWidget(mode_button_box)
+    main.mode_widget_layout.addWidget(mode_button_box)
     mode_button_box_layout=QVBoxLayout()
     mode_button_box.setLayout(mode_button_box_layout)
 
@@ -73,6 +72,13 @@ def set_mode(main,button):
         get_dates(main,main.query_start_date,main.query_end_date)
     elif main.query_mode =="Manual":
         pass
+
+def construct_manual_query_controls(main):
+    main.manual_query_box=QGroupBox
+    main.manual_query_box_layout=QVBoxLayout()
+    main.mode_widget_layout.addWidget(main.manual_query_box)
+    main.query_calendar=QCalendarWidget()
+    main.mode_widget_layout.addWidget(main.query_calendar)
 
 def get_dates(main,start,end):
     today = date.today()
