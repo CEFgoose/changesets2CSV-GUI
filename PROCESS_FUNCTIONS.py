@@ -22,6 +22,7 @@ spell=SpellChecker()
 
 # call get changesets for each selected editor------------------
 def start_get_changesets(main,date_list):
+    print(main.selected_user_ids)
     main.teamList.setColumnCount(12)
     main.teamList.setHeaderLabels(['Name','OSM Username','OSM User Id','Role','Changesets','Total Changes','Added','Modified','Deleted','Misspelled Comments', 'Misspelled Hashtags','Missing Hashtags'])        
     for i in main.selected_user_ids:

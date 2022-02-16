@@ -80,7 +80,8 @@ class MainWindow(QMainWindow):
         self.teamList.setHeaderLabels(['Name','OSM Username','OSM User Id','Role'])
         self.teamList.setSizePolicy (QSizePolicy.Minimum, QSizePolicy.Minimum)
         self.teamList.setSelectionMode(QAbstractItemView.ExtendedSelection)
-        self.teamList.clicked.connect(lambda:team_list_clicked(self))
+
+        self.teamList.itemSelectionChanged.connect(lambda:team_list_clicked(self))
 
         self.teamBoxLayout.addWidget(self.teamList)
         self.teamFrameLayout.addWidget(self.teamBox)

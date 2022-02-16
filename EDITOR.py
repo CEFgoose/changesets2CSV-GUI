@@ -10,6 +10,7 @@ class EDITOR(object):
         self.misspelled_words=[]
         self.misspelled_hashtags=[]
         self.missing_hashtags=[]
+        self.missing_hashtag_changeset_ids=[]
         self.list_entry=None  #stores the correspoding QTreeWidget Item
     #------------CHANGESET STATS-----------------------------------------
         self.new_changesets_count=0
