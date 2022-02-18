@@ -28,9 +28,9 @@ def comment_report_widget(main,editor):
     Hsplitter.addWidget(comment_list_box)
 
     comments_list=QTreeWidget()
-    comments_list.setColumnCount(2)
+    comments_list.setColumnCount(3)
     comments_list.doubleClicked.connect(lambda:comment_list_clicked(main,comments_list))
-    comments_list.setHeaderLabels(["Misspelled Word","Changeset ID"])
+    comments_list.setHeaderLabels(["Misspelled Word","Changeset ID","Date"])
     comment_list_box_layout.addWidget(comments_list)
 
     hashtag_list_box=QGroupBox()
@@ -41,8 +41,8 @@ def comment_report_widget(main,editor):
 
 
     hashtag_list=QTreeWidget()
-    hashtag_list.setColumnCount(2)
-    hashtag_list.setHeaderLabels(["Misspelled Hashtag","Changeset ID"])
+    hashtag_list.setColumnCount(3)
+    hashtag_list.setHeaderLabels(["Misspelled Hashtag","Changeset ID","Date"])
     hashtag_list_box_layout.addWidget(hashtag_list)
 
 
@@ -55,8 +55,8 @@ def comment_report_widget(main,editor):
 
 
     missing_hashtag_list=QTreeWidget()
-    missing_hashtag_list.setColumnCount(2)
-    missing_hashtag_list.setHeaderLabels(["Hashtags Missing","Changeset ID"])
+    missing_hashtag_list.setColumnCount(3)
+    missing_hashtag_list.setHeaderLabels(["Hashtags Missing","Changeset ID","Date"])
     missing_hashtag_list_box_layout.addWidget(missing_hashtag_list)
 
 
@@ -68,16 +68,19 @@ def populate_comment_report_list(main,editor,comments_list,hashtag_list,missing_
         item=QTreeWidgetItem()
         item.setText(0,i[0])
         item.setText(1,i[1])
+        item.setText(2,i[2])
         comments_list.addTopLevelItem(item)
     for i in editor.misspelled_hashtags:
         item=QTreeWidgetItem()
         item.setText(0,i[0])
         item.setText(1,i[1])
+        item.setText(2,i[2])
         hashtag_list.addTopLevelItem(item)  
     for i in editor.missing_hashtags:
         item=QTreeWidgetItem()
         item.setText(0,i[0])
         item.setText(1,i[1])
+        item.setText(2,i[2])
         missing_hashtag_list.addTopLevelItem(item)  
 
 def comment_list_clicked(main,inList):

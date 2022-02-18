@@ -22,7 +22,6 @@ spell=SpellChecker()
 
 # call get changesets for each selected editor------------------
 def start_get_changesets(main,date_list):
-    print(main.selected_user_ids)
     main.teamList.setColumnCount(12)
     main.teamList.setHeaderLabels(['Name','OSM Username','OSM User Id','Role','Changesets','Total Changes','Added','Modified','Deleted','Misspelled Comments', 'Misspelled Hashtags','Missing Hashtags'])        
     for i in main.selected_user_ids:
@@ -53,17 +52,17 @@ def start_get_changesets(main,date_list):
                 if m in main.accepted_words:
                     spell_count-=1
                 else:
-                    main.team_dict[i].misspelled_words.append((m,l.id))
+                    main.team_dict[i].misspelled_words.append((m,l.id,l.date_created))
             for n in l.hashtags:
                 if n not in main.accepted_hashtags:
                     misspelled_hashtags+=1
-                    main.team_dict[i].misspelled_hastags.append((n,l.id))
+                    main.team_dict[i].misspelled_hastags.append((n,l.id,l.date_created))
             if len(l.hashtags)<2:
                 diff=len(l.hashtags)
                 if diff ==0:
                     diff=2
                 missing_hashtags += diff
-                main.team_dict[i].missing_hashtag_changeset_ids.append((diff,l.id))
+                main.team_dict[i].missing_hashtag_changeset_ids.append((diff,l.id,l.date_created))
         main.team_dict[i].set_changeset_info(new_changesets,total_count,misspelled_hashtags,missing_hashtags,spell_count,total_changes,additions_count,modification_count,deleted_count)
         main.team_dict[i].display_changeset_info()
 
