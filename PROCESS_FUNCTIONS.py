@@ -130,14 +130,16 @@ def get_changesets(user=None, start_time=None, end_time=None, bbox=None):
                         if i != '':
                             commentText.append(i)
                 comment = commentText
+                AMD_info= count_new_modified_deleted(set_id)
+                added=AMD_info['Added']   
+                modified=AMD_info['Modified'] 
+                deleted=AMD_info['Deleted'] 
+                changeset=CHANGESET(set_id,set_created,set_changes,set_closed,hashtags,source,comment,added,modified,deleted)
+                changesets.append(changeset)
             except:
                 logging.exception('e')
-            AMD_info= count_new_modified_deleted(set_id)
-            added=AMD_info['Added']   
-            modified=AMD_info['Modified'] 
-            deleted=AMD_info['Deleted'] 
-            changeset=CHANGESET(set_id,set_created,set_changes,set_closed,hashtags,source,comment,added,modified,deleted)
-            changesets.append(changeset)
+                pass
+
     return changesets
 
 def count_new_modified_deleted(changesetID):
