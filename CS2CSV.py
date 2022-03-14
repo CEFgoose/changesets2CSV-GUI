@@ -1,3 +1,13 @@
+# License & Credits 
+__author__ = "Chris Gousset"
+__copyright__ = "N/A"
+__credits__ = ["Chris Gousset","Zack LaVergne"]
+__license__ = "N/A"
+__version__ = "1.4.3"
+__maintainer__ = "Chris Gousset"
+__email__ = "chris.gousset@kaart.com"
+__status__ = "Development"
+
 # imports-----------------------------------------------
 from PyQt5 import QtCore
 from PyQt5.QtCore import *
