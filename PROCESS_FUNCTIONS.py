@@ -56,7 +56,7 @@ def start_get_changesets(main,date_list):
             for n in l.hashtags:
                 if n not in main.accepted_hashtags:
                     misspelled_hashtags+=1
-                    main.team_dict[i].misspelled_hastags.append((n,l.id,l.date_created))
+                    main.team_dict[i].misspelled_hashtags.append((n,l.id,l.date_created))
             if len(l.hashtags)<2:
                 diff=len(l.hashtags)
                 if diff ==0:
