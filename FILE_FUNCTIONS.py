@@ -24,8 +24,10 @@ def import_team_json(main):
             main.team_name=main.team_obj['properties']['team']
             main.team_name_field.setText(main.team_name)
         parse_editors(main,main.team_obj)
-        main.accepted_words=main.team_obj['properties']['accepted_words']
-        main.accepted_hashtags=main.team_obj['properties']['accepted_hashtags']
+        if 'accepted_words' in main.team_obj['properties']:
+            main.accepted_words=main.team_obj['properties']['accepted_words']
+        if 'accepted_hashtags' in main.team_obj['properties']:   
+            main.accepted_hashtags=main.team_obj['properties']['accepted_hashtags']
 # parse editors from json file--------------------
 def parse_editors(main,team_obj):
     main.team_dict={}
@@ -40,6 +42,8 @@ def autosave_team_file(main):
         main.team_obj['properties']['team']=main.team_name
         main.team_obj['properties']['version']+=.1
         main.team_obj['properties']['last_modified']=str(date.today())
+        main.team_file=main.team_file.rsplit("/",1)[0]
+        main.team_file=main.team_file+'/%s.json'%(main.team_name)
         with open (main.team_file,'w+')as save_file:
             json.dump(main.team_obj, save_file)
 
@@ -50,6 +54,8 @@ def save_team_file(main):
         main.team_obj['properties']['team']=main.team_name
         main.team_obj['properties']['version']+=1
         main.team_obj['properties']['last_modified']=str(date.today())
+        main.team_file=main.team_file.rsplit("/",1)[0]
+        main.team_file=main.team_file+'/%s.json'%(main.team_name)
         with open (main.team_file,'w+')as save_file:
             json.dump(main.team_obj, save_file)
 

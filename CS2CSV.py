@@ -9,6 +9,7 @@ __email__ = "chris.gousset@kaart.com"
 __status__ = "Development"
 
 # imports-----------------------------------------------
+from PyQt5 import sip
 from PyQt5 import QtCore
 from PyQt5.QtCore import *
 from PyQt5.QtWidgets import(
@@ -30,6 +31,7 @@ from HASHTAGS_MODAL import *
 from COMMENTS_MODAL import *
 from CSV_EXPORT import *
 from COMMENT_REPORT_MODAL import *
+import pandas
 def resource_path(relative_path):
     try:
         # PyInstaller creates a temp folder and stores path in _MEIPASS
@@ -45,6 +47,9 @@ class MainWindow(QMainWindow):
 # main window variables---------------------------------
         self.team_name=''
         self.selected_user_ids=[]
+        self.accepted_words=[]
+        self.accepted_hashtags=[]
+        self.changeset_mode_widget=None
         self.team_dict=False
         self.team_obj=False
         self.loaded_team_obj=False
