@@ -66,6 +66,7 @@ def hashtag_widget(main):
     clear_button.clicked.connect(lambda:clear_hashtag(edit_field,edit_button))
     control_box_layout.addWidget(clear_button)
 
+
     populate_hashtag_list(main,hashtag_list)
     main.hashtag_widget.show()
     

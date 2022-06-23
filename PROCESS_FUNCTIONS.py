@@ -41,9 +41,7 @@ def start_get_changesets(main,date_list):
                 additions_count +=k.added
                 modification_count +=k.modified
                 deleted_count +=k.deleted
-
             total_count+=len(get_changeset_list)
-
         for l in new_changesets:
             total_changes+=int(l.changes)
             misspelled = spell.unknown(l.comment)

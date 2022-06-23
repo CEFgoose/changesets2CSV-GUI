@@ -76,11 +76,12 @@ def populate_comment_report_list(main,editor,comments_list,hashtag_list,missing_
         item.setText(1,i[1])
         item.setText(2,i[2])
         hashtag_list.addTopLevelItem(item)  
-    for i in editor.missing_hashtags:
+    for i in editor.missing_hashtag_changeset_ids:
+
         item=QTreeWidgetItem()
-        item.setText(0,i[0])
-        item.setText(1,i[1])
-        item.setText(2,i[2])
+        item.setText(0,str(i[0]))
+        item.setText(1,str(i[1]))
+        item.setText(2,str(i[2]))
         missing_hashtag_list.addTopLevelItem(item)  
 
 def comment_list_clicked(main,inList):

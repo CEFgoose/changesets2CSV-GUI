@@ -134,7 +134,6 @@ def set_manual_dates(main):
         main.start_date=str(main.start_date).split(" ")[1:]
         main.start_date= ' '.join([str(elem) for elem in main.start_date])
         main.start_date = datetime.strptime(main.start_date, '%b %d %Y')
-
     elif main.end_date_button.isChecked():
         main.end_date=main.query_calendar.selectedDate()
         main.end_date=main.end_date.toString()
@@ -152,7 +151,7 @@ def get_dates(main,start,end):
         i=str(i)
         i=i.split(' ')[0]
         tempList.append(i)
-    tempList.append(str(today))
+    tempList.append(str(end))
     for index,value in enumerate(tempList[:-1]):
         tup=(value,tempList[index+1])
         tupList.append(tup)

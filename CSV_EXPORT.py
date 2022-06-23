@@ -4,7 +4,6 @@ from datetime import datetime, date, timedelta
 
 
 def export_CSV(data,team_name,directory):
-    print("EXPORT",directory)
     today = date.today()
     csv_columns = ['name','username','user_id','role','Total Chagesets','Total Changes','Total Additions','Total Modified','Total Deleted','Misspelled Hashtags','Missing Hashtags',"Misspelled Comments"]
 
@@ -22,7 +21,6 @@ def export_CSV(data,team_name,directory):
 
 
 def construct_csv_data(main):
-    print("CONSTRUCT")
     returnData=[]
     if len(main.selected_user_ids)>1:
         for i in main.selected_user_ids:
