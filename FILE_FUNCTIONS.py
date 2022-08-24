@@ -5,6 +5,8 @@ from EDITOR import *
 from DELETE_USER_MODAL import *
 from datetime import datetime, date, timedelta
 from PyQt5 import sip
+from string import ascii_uppercase as alcUP
+from string import ascii_lowercase as alcLOW
 # import team json file---------------------------
 def import_team_json(main):
     files = QFileDialog.getOpenFileNames(main, main.filters, main.importDirectory, main.select_filters)[0]
@@ -26,6 +28,10 @@ def import_team_json(main):
         parse_editors(main,main.team_obj)
         if 'accepted_words' in main.team_obj['properties']:
             main.accepted_words=main.team_obj['properties']['accepted_words']
+            for letter in alcUP:
+                main.accepted_words.append("%s"%(letter))
+            for letter in alcLOW:
+                main.accepted_words.append("%s"%(letter))
         if 'accepted_hashtags' in main.team_obj['properties']:   
             main.accepted_hashtags=main.team_obj['properties']['accepted_hashtags']
 # parse editors from json file--------------------

@@ -45,6 +45,7 @@ def start_get_changesets(main,date_list):
         for l in new_changesets:
             total_changes+=int(l.changes)
             misspelled = spell.unknown(l.comment)
+            
             spell_count+=len(misspelled)
             for m in misspelled:
                 if m in main.accepted_words:
