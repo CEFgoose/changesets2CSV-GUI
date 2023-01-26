@@ -94,7 +94,7 @@ def get_changesets(user=None, start_time=None, end_time=None, bbox=None):
             source=""
             hashtags=[]
             i=i.strip()
-            entry=i.split('<tag k="source" v="')
+            entry=i.split('<tag k=')
             info=entry[0]
             info=info.split(" ")
             set_id=info[1].split('id="')[1]
@@ -138,7 +138,6 @@ def get_changesets(user=None, start_time=None, end_time=None, bbox=None):
             except:
                 logging.exception('e')
                 pass
-
     return changesets
 
 def count_new_modified_deleted(changesetID):
