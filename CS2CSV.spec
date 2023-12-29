@@ -7,8 +7,8 @@ block_cipher = None
 a = Analysis(
     ['CS2CSV.py'],
     pathex=[],
-    binaries=[('en.json.gz', 'spellchecker/resources')],
-    datas=[],
+    binaries=[],
+    datas=[('en.json.gz', 'spellchecker/resources')],
     hiddenimports=[],
     hookspath=[],
     hooksconfig={},
@@ -41,11 +41,11 @@ exe = EXE(
     target_arch=None,
     codesign_identity=None,
     entitlements_file=None,
-    icon='/Users/cefgoose/Desktop/cs2csv.png',
+    icon='/Users/cefgoose/Desktop/cs2csv.icns',
 )
 app = BUNDLE(
     exe,
     name='CS2CSV.app',
-    icon='/Users/cefgoose/Desktop/cs2csv.png',
+    icon='/Users/cefgoose/Desktop/cs2csv.icns',
     bundle_identifier=None,
 )

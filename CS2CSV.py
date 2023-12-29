@@ -16,7 +16,7 @@ from PyQt5.QtWidgets import(
 QMainWindow,QApplication,QWidget,
 QGridLayout,QHBoxLayout,QVBoxLayout,
 QAction,QGroupBox,QSplitter,
-QFrame,QPushButton,QLabel,
+QFrame,QPushButton,QLabel,QLineEdit
 )
 import logging
 import os 
@@ -32,6 +32,7 @@ from COMMENTS_MODAL import *
 from CSV_EXPORT import *
 from COMMENT_REPORT_MODAL import *
 import pandas
+from API_KEY_MODAL import set_api_key_modal
 def resource_path(relative_path):
     try:
         # PyInstaller creates a temp folder and stores path in _MEIPASS
@@ -91,7 +92,7 @@ class MainWindow(QMainWindow):
         self.teamList=QTreeWidget()
         
         self.teamList.setColumnCount(4)
-        self.teamList.setHeaderLabels(['Name','OSM Username','OSM User Id','Role'])
+        self.teamList.setHeaderLabels(['Name','OSM Username','OSM User Id','Maproulette Id','Role'])
         self.teamList.setSizePolicy (QSizePolicy.Minimum, QSizePolicy.Minimum)
         self.teamList.setSelectionMode(QAbstractItemView.ExtendedSelection)
 
@@ -151,6 +152,7 @@ class MainWindow(QMainWindow):
             fileMenu = menuBar.addMenu("&File")
             editMenu = menuBar.addMenu("&Edit")
             processMenu = menuBar.addMenu("&Process")
+            settingsMenu = menuBar.addMenu("&Settings")
 # file menu-------------------------------------------
             self.import_team_action = QAction("Import Team List",self)
             self.import_team_action.triggered.connect(lambda:import_team_json(self))
@@ -163,7 +165,11 @@ class MainWindow(QMainWindow):
             fileMenu.addAction(self.export_csv_action) 
 # process menu----------------------------------------
             self.get_changesets = QAction("Get OSM Changesets",self)
-            self.get_changesets.triggered.connect(lambda:changesets_mode_widget(self))
+            self.get_changesets.triggered.connect(lambda:changesets_mode_widget(self,'OSM'))
+            processMenu.addAction(self.get_changesets) 
+
+            self.get_changesets = QAction("Get Maproulette Tasks",self)
+            self.get_changesets.triggered.connect(lambda:changesets_mode_widget(self,'Maproulette'))
             processMenu.addAction(self.get_changesets) 
 
             self.comment_report = QAction("Comment & Hashtag Report",self)
@@ -188,7 +194,12 @@ class MainWindow(QMainWindow):
 
             self.edit_accepted_comments = QAction("Edit Accepted Comments",self)
             self.edit_accepted_comments.triggered.connect(lambda:comments_widget(self))
-            editMenu.addAction(self.edit_accepted_comments)             
+            editMenu.addAction(self.edit_accepted_comments)
+# settings menu---------------------------------
+            self.add_api_key = QAction("Add API Key",self)
+            self.add_api_key.triggered.connect(lambda:set_api_key_modal(self))
+            settingsMenu.addAction(self.add_api_key)   
+
 
 # close ewindow event---------------------------------
     def closeEvent(self, event):
@@ -216,3 +227,9 @@ sys.excepthook = exception_hook
 # main loop init--------------------------------------
 while  True:
     main(sys.argv)
+
+
+    changeset_info={
+         
+         
+    }

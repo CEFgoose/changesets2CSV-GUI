@@ -5,8 +5,14 @@ from EDITOR import *
 from DELETE_USER_MODAL import *
 from datetime import datetime, date, timedelta
 from PyQt5 import sip
+import keyring
+import requests
+API_PATH = "api/v2/users/find"
+BASE_URL= "https://maproulette.org/"
+KEY=keyring.get_password("maproulette",'')
 from string import ascii_uppercase as alcUP
 from string import ascii_lowercase as alcLOW
+
 # import team json file---------------------------
 def import_team_json(main):
     files = QFileDialog.getOpenFileNames(main, main.filters, main.importDirectory, main.select_filters)[0]
@@ -26,6 +32,7 @@ def import_team_json(main):
             main.team_name=main.team_obj['properties']['team']
             main.team_name_field.setText(main.team_name)
         parse_editors(main,main.team_obj)
+        autosave_team_file(main)   
         if 'accepted_words' in main.team_obj['properties']:
             main.accepted_words=main.team_obj['properties']['accepted_words']
             for letter in alcUP:
@@ -34,11 +41,37 @@ def import_team_json(main):
                 main.accepted_words.append("%s"%(letter))
         if 'accepted_hashtags' in main.team_obj['properties']:   
             main.accepted_hashtags=main.team_obj['properties']['accepted_hashtags']
+            
+            
+# get user maproulette id--------------------            
+            
+def get_single_user_id_from_api(user):
+
+    if KEY != None and KEY != '':
+        response = requests.get(
+            BASE_URL + API_PATH,
+            headers={"apikey": KEY},
+            params={"username": user},
+            # verify=VERIFY_CERT,
+        )
+        if response.json():
+            print(response.json()[0]["id"])
+            return response.json()[0]["id"]
+        
+            
 # parse editors from json file--------------------
 def parse_editors(main,team_obj):
     main.team_dict={}
     for i in team_obj['users']:
-        editor=EDITOR(i['name'],i['username'],i['user_id'],i['role']) 
+        if not 'maproulette_id' in i.keys():
+            user=i['username']
+            print('mapillary_id not found for %s'%(user))
+            maproulette_id = get_single_user_id_from_api(user)
+            i['maproulette_id']=maproulette_id
+            
+            
+            
+        editor=EDITOR(i['name'],i['username'],i['user_id'],i['maproulette_id'],i['role']) 
         editor.construct_list_item(main)
         main.team_dict[editor.osm_user_id]=editor
 

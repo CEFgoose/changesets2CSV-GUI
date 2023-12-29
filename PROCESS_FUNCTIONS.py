@@ -15,15 +15,16 @@ import json
 import logging
 import os
 from CHANGSET import *
+import keyring
 from spellchecker import SpellChecker
-
+KEY=keyring.get_password("maproulette",'')
 # spell checker setup & variables-------------------------------
 spell=SpellChecker()
 
 # call get changesets for each selected editor------------------
 def start_get_changesets(main,date_list):
     main.teamList.setColumnCount(12)
-    main.teamList.setHeaderLabels(['Name','OSM Username','OSM User Id','Role','Changesets','Total Changes','Added','Modified','Deleted','Misspelled Comments', 'Misspelled Hashtags','Missing Hashtags'])        
+    main.teamList.setHeaderLabels(['Name','OSM Username','OSM User Id','Maproulette Id','Role','Changesets','Total Changes','Added','Modified','Deleted','Misspelled Comments', 'Misspelled Hashtags','Missing Hashtags'])        
     for i in main.selected_user_ids:
         new_changesets=[]
         total_count=0
@@ -65,6 +66,54 @@ def start_get_changesets(main,date_list):
         main.team_dict[i].set_changeset_info(new_changesets,total_count,misspelled_hashtags,missing_hashtags,spell_count,total_changes,additions_count,modification_count,deleted_count)
         main.team_dict[i].display_changeset_info()
 
+
+
+
+
+
+# call get maproulette tasks complete------------------
+def start_get_maproulette_tasks(main,date_list):
+    main.teamList.setColumnCount(12)
+    main.teamList.setHeaderLabels(['Name','OSM Username','OSM User Id','Maproulette Id','Role','Completed Tasks', 'Score','Avg. time'])        
+    for i, j in zip(main.selected_maproulette_ids,main.selected_user_ids):
+        new_tasks=[]
+        total_count=0
+        total_changes=0
+        start_date=date_list[0][0]
+        if " " in start_date:
+            start_date=str(start_date.split(" ")[0])
+        end_date=date_list[-1][1]
+        if " " in end_date:
+            end_date=str(end_date.split(" ")[0])
+        metric_type='user'
+        response= requests.get(
+        url=("https://maproulette.org/" + "api/v2/data/%s/leaderboard")%(metric_type),
+        headers={"apikey": KEY},
+        params={
+            "start": start_date,
+            "end": end_date,
+            "limit": 100,
+            "userIds":i
+        },
+        )
+        if response.ok:
+            if len(response.json())>0:
+                response=response.json()[0]
+                completed_tasks=response['completedTasks']
+                score=response['score']
+                average_time=response['avgTimeSpent']
+            else:
+                completed_tasks=0
+                score=0
+                average_time=0
+    # r.raise_for_status()
+
+        main.team_dict[j].set_maproulette_info(completed_tasks,score,average_time)
+        main.team_dict[j].display_maproulette_info()
+
+
+
+
 # get changesets api call--------------------------------------------------
 def get_changesets(user=None, start_time=None, end_time=None, bbox=None):
     query_params = {}
@@ -80,6 +129,7 @@ def get_changesets(user=None, start_time=None, end_time=None, bbox=None):
     if bbox:
         query_params["bbox"] = ",".join(bbox)
     changesets = []
+
     api_url = "https://api.openstreetmap.org/api/0.6/changesets"
     session = CacheControl(requests.session())
     result = session.get(api_url, params=query_params)

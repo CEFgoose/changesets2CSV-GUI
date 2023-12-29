@@ -6,4 +6,4 @@ pyi-makespec --add-binary="en.json.gz:spellchecker/resources" --windowed  --onef
 
 Compile app from spec:
 
-pyinstaller --noconsole --onefile --windowed CS2CSV.spec
+pyinstaller CS2CSV.spec

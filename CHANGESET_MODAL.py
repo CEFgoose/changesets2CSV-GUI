@@ -6,8 +6,9 @@ import datetime
 import pandas
 from PROCESS_FUNCTIONS import *
 
-def changesets_mode_widget(main):
+def changesets_mode_widget(main,metric):
     main.display_mode='expanded'
+    main.target_metric=metric
     main.changeset_mode_widget=QWidget()
     main.changeset_mode_widget.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint)
     main.mode_widget_layout1=QGridLayout()
@@ -101,7 +102,10 @@ def query_proceed(main):
     if main.query_mode is not None:
         if main.query_mode =="Manual":
             get_dates(main,main.start_date,main.end_date)  
-        start_get_changesets(main,main.query_days_list)
+        if main.target_metric =='OSM':
+            start_get_changesets(main,main.query_days_list)
+        elif main.target_metric =='Maproulette':
+            start_get_maproulette_tasks(main,main.query_days_list)
 
 def set_mode(main,button):
     today = date.today()
